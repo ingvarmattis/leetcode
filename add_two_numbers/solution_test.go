@@ -1,4 +1,4 @@
-package two_numbers
+package add_two_numbers
 
 import (
 	"reflect"
