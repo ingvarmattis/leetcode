@@ -19,22 +19,22 @@ func Test_isValid(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "()[]{}",
+			name: "()[]{}=true",
 			args: args{"()[]{}"},
 			want: true,
 		},
 		{
-			name: "([])",
+			name: "([])=true",
 			args: args{"([])"},
 			want: true,
 		},
 		{
-			name: "(]",
+			name: "(]=false",
 			args: args{"(]"},
 			want: false,
 		},
 		{
-			name: "([)]",
+			name: "([)]=false",
 			args: args{"([)]"},
 			want: false,
 		},
@@ -46,6 +46,11 @@ func Test_isValid(t *testing.T) {
 		{
 			name: "[[=false",
 			args: args{"[["},
+			want: false,
+		},
+		{
+			name: "]=false",
+			args: args{"]"},
 			want: false,
 		},
 	}

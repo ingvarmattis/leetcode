@@ -1,63 +1,25 @@
 package valid_parentheses
 
 func isValid(s string) bool {
-	const (
-		circleOpen  rune = '('
-		circleClose rune = ')'
+	m := map[rune]rune{
+		'(': ')',
+		'[': ']',
+		'{': '}',
+	}
 
-		squareOpen  rune = '['
-		squareClose rune = ']'
-
-		figureOpen  rune = '{'
-		figureClose rune = '}'
-	)
-
-	circleCount, squareCount, figureCount := 0, 0, 0
 	lastOpenRunes := make([]rune, 0, len(s)/2+1)
 
 	for _, r := range s {
-		switch {
-		case r == circleClose:
-			if circleCount == 0 {
+		if closeRune, ok := m[r]; ok {
+			lastOpenRunes = append(lastOpenRunes, closeRune)
+		} else {
+			if len(lastOpenRunes) == 0 || lastOpenRunes[len(lastOpenRunes)-1] != r {
 				return false
 			}
-			if lastOpenRunes[len(lastOpenRunes)-1] == circleOpen {
-				circleCount--
-				lastOpenRunes = lastOpenRunes[:len(lastOpenRunes)-1]
-			} else {
-				return false
-			}
-		case r == squareClose:
-			if squareCount == 0 {
-				return false
-			}
-			if lastOpenRunes[len(lastOpenRunes)-1] == squareOpen {
-				squareCount--
-				lastOpenRunes = lastOpenRunes[:len(lastOpenRunes)-1]
-			} else {
-				return false
-			}
-		case r == figureClose:
-			if figureCount == 0 {
-				return false
-			}
-			if lastOpenRunes[len(lastOpenRunes)-1] == figureOpen {
-				figureCount--
-				lastOpenRunes = lastOpenRunes[:len(lastOpenRunes)-1]
-			} else {
-				return false
-			}
-		case r == circleOpen:
-			circleCount++
-			lastOpenRunes = append(lastOpenRunes, r)
-		case r == squareOpen:
-			squareCount++
-			lastOpenRunes = append(lastOpenRunes, r)
-		case r == figureOpen:
-			figureCount++
-			lastOpenRunes = append(lastOpenRunes, r)
+
+			lastOpenRunes = lastOpenRunes[:len(lastOpenRunes)-1]
 		}
 	}
 
-	return circleCount == 0 && squareCount == 0 && figureCount == 0
+	return len(lastOpenRunes) == 0
 }
